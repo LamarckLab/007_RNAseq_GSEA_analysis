@@ -9,7 +9,7 @@ setwd('C:/Users/Lamarck/Desktop')
 # Step1 读取数据
 
 # CSV文件包含两列ENTREZID 和 log2FoldChange
-deg <- read.csv("UP_genes_ENSEMBL_ENTREZID.csv")
+deg <- read.csv("genes_ENSEMBL_ENTREZID.csv")
 head(deg)
 
 # Step2 构建geneList
