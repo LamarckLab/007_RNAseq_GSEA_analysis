@@ -4,28 +4,20 @@ library(enrichplot)       # 用于 GSEA 排名图等可视化
 library(ggplot2)          # 用于气泡图
 library(dplyr)            # 数据处理辅助
 
-#--------------------#
 # Step0 工作路径设置 #
-#--------------------#
 setwd("C:/Users/Lamarck/Desktop")
 
-#----------------------------------#
 # Step1 读取数据 (必须含ENTREZID和log2FoldChange两列) #
-#----------------------------------#
 deg <- read.csv("genes_ENSEMBL_ENTREZID.csv")
 head(deg)
 
-#---------------------#
 # Step2 构建 geneList #
-#---------------------#
 geneList <- deg$log2FoldChange
 names(geneList) <- as.character(deg$ENTREZID)
 geneList <- sort(geneList, decreasing = TRUE)
 head(geneList)
 
-#----------------------#
 # Step3 运行 GSEA 分析 #
-#----------------------#
 
 ## KEGG 富集分析（gseKEGG）
 kegg_gsea <- gseKEGG(
@@ -52,20 +44,16 @@ go_gsea <- gseGO(
 )
 go_gsea <- setReadable(go_gsea, OrgDb = org.Hs.eg.db, keyType = "ENTREZID")
 
-#-------------------------#
 # Step4 保存富集分析结果  #
-#-------------------------#
 kegg_result <- kegg_gsea@result
 go_result   <- go_gsea@result
 
 write.csv(kegg_result, file = "GSEA_result_KEGG_human.csv", row.names = FALSE)
 write.csv(go_result, file = "GSEA_result_GO_human.csv",   row.names = FALSE)
 
-#------------------#
 # Step5 可视化输出 #
-#------------------#
 
-## 1) 画 KEGG 分析第一个通路的 GSEA 曲线图并保存为 PDF ##
+# 画KEGG分析第一个通路的GSEA曲线图并保存为PDF
 pdf(file = "GSEA_KEGG_Enrichment_Score_Curve.pdf", width = 8, height = 6)
 gseaplot2(
   kegg_gsea, 
@@ -75,7 +63,7 @@ gseaplot2(
 )
 dev.off()
 
-## 2) 画 GO 分析第一个通路的 GSEA 曲线图并保存为 PDF ##
+# 画GO分析第一个通路的GSEA曲线图并保存为PDF
 pdf(file = "GSEA_GO_Enrichment_Score_Curve.pdf", width = 8, height = 6)
 gseaplot2(
   go_gsea, 
